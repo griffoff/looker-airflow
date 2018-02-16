@@ -10,11 +10,13 @@ view: log {
   dimension: _fivetran_deleted {
     type: yesno
     sql: ${TABLE}._FIVETRAN_DELETED ;;
+    hidden: yes
   }
 
   dimension: _fivetran_synced {
     type: string
     sql: ${TABLE}._FIVETRAN_SYNCED ;;
+    hidden: yes
   }
 
   dimension: dag_id {
@@ -33,10 +35,11 @@ view: log {
     sql: ${TABLE}.EVENT ;;
   }
 
-  dimension: execution_date {
-    type: string
-    sql: ${TABLE}.EXECUTION_DATE ;;
-  }
+ dimension_group: execution_date {
+  type: time
+  timeframes: [time,date,time_of_day,hour,minute]
+  sql: ${TABLE}.EXECUTION_DATE ;;
+}
 
   dimension: extra {
     type: string

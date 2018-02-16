@@ -1,14 +1,23 @@
 view: task_instance {
   sql_table_name: AIRFLOW_AIRFLOW.TASK_INSTANCE ;;
 
+  dimension: pk {
+    type: string
+    sql: array_to_string(array_construct(${dag_id}, ${task_id}, ${execution_date_time}), '.');;
+    hidden: yes
+    primary_key: yes
+  }
+
   dimension: _fivetran_deleted {
     type: yesno
     sql: ${TABLE}._FIVETRAN_DELETED ;;
+    hidden: yes
   }
 
   dimension: _fivetran_synced {
     type: string
     sql: ${TABLE}._FIVETRAN_SYNCED ;;
+    hidden: yes
   }
 
   dimension: dag_id {
@@ -51,7 +60,6 @@ view: task_instance {
 
   dimension: job_id {
     type: number
-    primary_key: yes
     # hidden: yes
     sql: ${TABLE}.JOB_ID ;;
   }
